@@ -1,1 +1,0 @@
-# ТЗ для Namespace
