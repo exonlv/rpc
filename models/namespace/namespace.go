@@ -3,9 +3,9 @@ package namespace
 import "database/sql"
 
 type Namespace struct {
-	ID        int64
+	ID        string
 	Label     string
-	UserID    int64
+	UserID    string
 	Created   string
 	Active    bool
 	Removed   bool

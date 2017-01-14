@@ -1,8 +1,8 @@
 CREATE TABLE IF NOT EXISTS public.namespace
 (
-  id serial NOT NULL,
+  id uuid NOT NULL DEFAULT uuid_generate_v4(),
   label character varying,
-  user_id integer NOT NULL references users(user_id),
+  user_id uuid NOT NULL references users(user_id),
   created timestamp without time zone NOT NULL DEFAULT statement_timestamp(),
   active boolean NOT NULL DEFAULT false,
   removed boolean NOT NULL DEFAULT false,
