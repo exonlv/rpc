@@ -1,6 +1,8 @@
+create extension "uuid-ossp";
+
 CREATE TABLE IF NOT EXISTS public.users
 (
-  user_id integer NOT NULL DEFAULT nextval('"User_UserID_seq"'::regclass),
+  user_id uuid NOT NULL DEFAULT uuid_generate_v4(),
   login character varying NOT NULL,
   pwd_key varchar NOT NULL, --len(base64(seq [32]byte)) == 128
   salt varchar NOT NULL,

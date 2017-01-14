@@ -135,7 +135,7 @@ func (u *User) Replace(newUser User, resp *bool) error {
 
 //********FIND METHODS***********
 //FindByID поиск пользователя по его ID
-func (_ *User) FindByID(id int64, resp *User) error {
+func (_ *User) FindByID(id string, resp *User) error {
 	db, err := mapper.GetDB("default")
 	if err != nil {
 		log.Println(err)
@@ -193,7 +193,7 @@ func (u *User) ActivateByLogin(login string, resp *bool) error {
 	return nil
 }
 
-func (u *User) ActivateByID(userID int64, resp *bool) error {
+func (u *User) ActivateByID(userID string, resp *bool) error {
 	db, err := mapper.GetDB("default")
 	if err != nil {
 		log.Println(err)
@@ -233,7 +233,7 @@ func (u *User) DeactivateByLogin(login string, resp *bool) error {
 	return nil
 }
 
-func (u *User) DeactivateByID(userID int64, resp *bool) error {
+func (u *User) DeactivateByID(userID string, resp *bool) error {
 	db, err := mapper.GetDB("default")
 	if err != nil {
 		log.Println(err)

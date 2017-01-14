@@ -2,6 +2,7 @@ package user
 
 import (
 	"bitbucket.org/exonch/ch-store/mappers"
+	"fmt"
 	"log"
 	"time"
 )
@@ -9,7 +10,7 @@ import (
 type (
 	//User описывает модель пользователя системы
 	User struct {
-		UserID   *int64     `json:"user_id"`
+		UserID   *string       `json:"user_id"`
 		Login    *string    `json:"login"`
 		Password *string    `json:"-"`
 		Key      *string    `json:"key"` // encrypted password
@@ -23,7 +24,7 @@ type (
 )
 
 func (u *User) allocateMem() {
-	u.UserID = new(int64)
+	u.UserID = new(string)
 	u.Login = new(string)
 	u.Password = new(string)
 	u.Key = new(string)
@@ -80,7 +81,7 @@ func (user *User) checkFields(fields ...string) (bool, []error) {
 	return true, nil
 }
 
-func (user *User) debugShow() {
+func (user *User)debugShow() {
 	printif := func(name string, value *string) {
 		if value != nil {
 			fmt.Printf("%s: %s\n", name, *value)
@@ -95,5 +96,5 @@ func (user *User) debugShow() {
 	printif("LastName", user.LastName)
 	fmt.Printf("Active %v", user.Active)
 	fmt.Printf("Reg time %v", user.Register)
-	//printif("UserId", user.UserID)
+	printif("UserId", user.UserID)
 }
