@@ -11,6 +11,8 @@
  4. active [timestamp] - генерирует PG
  5. opened [bool]
  6. ip [string]
+ 
+ \* В качестве генератора uuid использовать uuid_generate_v4()
 
 Методы
 ------
