@@ -7,8 +7,8 @@ import (
 )
 
 type Tcp struct {
-	id      int64
-	user_id int64
+	id      string
+	user_id string
 	channel string
 	active  time.Time
 	opened  bool

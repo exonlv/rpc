@@ -5,7 +5,7 @@ import (
 )
 
 //Создает новую запись в таблице, если при вызове метода Open в таблице еще нету записи о пользователе с (user_id, channel)
-func (tcp *Tcp) Insert() error {
+func (tcp *Tcp) insert() error {
 	db, err := mapper.GetDB("default")
 	if err != nil {
 		return err
@@ -26,7 +26,7 @@ func (_ *Tcp) Open(tcp Tcp, ok *bool) error {
 	err = db.QueryRow("SELECT channel FROM tcp WHERE user_id=$1 AND channel=$2", tcp.user_id, tcp.channel).Scan(&count)
 	switch {
 	case err == sql.ErrNoRows:
-		err = tcp.Insert(db)
+		err = tcp.insert(db)
 		if err != nil {
 			return err
 		}
@@ -57,7 +57,7 @@ func (_ *Tcp) Close(tcp Tcp, ok *bool) error {
 }
 
 //Возвращает все TCP соединения у пользователя
-func (_ *Tcp) GetAll(user_id int64, resp *[]Tcp) error {
+func (_ *Tcp) GetAll(user_id string, resp *[]Tcp) error {
 	db, err := mapper.GetDB("default")
 	if err != nil {
 		return err
@@ -79,7 +79,7 @@ func (_ *Tcp) GetAll(user_id int64, resp *[]Tcp) error {
 	return nil
 }
 
-func (_ *Tcp) Get(id int64, tcp *Tcp) error {
+func (_ *Tcp) Get(id string, tcp *Tcp) error {
 	db, err := mapper.GetDB("default")
 	if err != nil {
 		return err
