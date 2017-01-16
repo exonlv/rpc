@@ -12,6 +12,8 @@
  5. active [boolean] - DEFAULT: false
  6. removed [boolean] - DEFAULT: false
  7. kube_exist [boolean] - DEFAULT: false
+ 
+ \* В качестве генератора uuid использовать uuid_generate_v4()
 
 Методы
 ------
