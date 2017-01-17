@@ -1,4 +1,4 @@
-CREATE TABLE IF NOT EXISTS public.namespace
+CREATE TABLE IF NOT EXISTS public.namespaces
 (
   id uuid NOT NULL DEFAULT uuid_generate_v4(),
   label character varying,
