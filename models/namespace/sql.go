@@ -15,15 +15,15 @@ func (_ *Namespace) Delete(ns Namespace, ok *bool) error {
 }
 
 // GetAll (user_id string, *[]Namespace) - возврат всех Namespace пользователя
-func (_ *Namespace) GetAll(userId string, resp []*Namespace) error {
+func (_ *Namespace) GetAll(userId string, resp *[]Namespace) error {
 	rows, err := db.Query("SELECT * FROM namespaces WHERE user_id = $1", userId)
 	if err != nil {
 		return err
 	}
 	defer rows.Close()
-	namespaces := make([]*Namespace, 0)
+	namespaces := make([]Namespace, 0)
 	for rows.Next() {
-		ns := new(Namespace)
+		ns := Namespace{}
 		err := rows.Scan(&ns.ID,
 			&ns.Label,
 			&ns.UserID,
@@ -37,14 +37,14 @@ func (_ *Namespace) GetAll(userId string, resp []*Namespace) error {
 		}
 		namespaces = append(namespaces, ns)
 	}
-	resp = namespaces
+	*resp = namespaces
 	return nil
 
 }
 
 // Get (id string, *Namespace) - возврат конкретного Namespace пользователя
 func (_ *Namespace) Get(id string, resp *Namespace) error {
-	ns := new(Namespace)
+	ns := Namespace{}
 	row := db.QueryRow("SELECT * FROM namespaces WHERE id = $1", id)
 	err := row.Scan(&ns.ID,
 		&ns.Label,
@@ -58,7 +58,7 @@ func (_ *Namespace) Get(id string, resp *Namespace) error {
 		return err
 	}
 
-	resp = ns
+	*resp = ns
 	return nil
 
 }
