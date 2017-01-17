@@ -8,8 +8,12 @@ import (
 var err error
 
 func (tcp *Tcp) insert() error {
+	db, err := mapper.GetDB("default")
+	if err != nil {
+		return err
+	}
 	//записывает в таблице время в формате unix timestamp
-	_, err := db.Exec("INSERT INTO tcp(user_id, channel, active, opened, ip) VALUES($1, $2, now(), True, $3)", tcp.user_id, tcp.channel, tcp.ip)
+	_, err = db.Exec("INSERT INTO tcp(user_id, channel, active, opened, ip) VALUES($1, $2, now(), True, $3)", tcp.user_id, tcp.channel, tcp.ip)
 	return err
 }
 
