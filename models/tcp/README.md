@@ -17,8 +17,8 @@
 Методы
 ------
 
- 1. Open (Tcp, *bool) - Добавление новой записи в таблице Tcp. Если запись с **user_id и channel** уже существует, изменить opened->true и обновить время в active. Передаются **user_id, channel, ip**.
- 2. Close (Tcp, *bool) - изменение **opened -> false**
+ 1. Open (Tcp, *bool) - Добавление новой записи в таблице Tcp. Если запись с user_id и channel уже существует, изменить opened->true и обновить время в active. Передаются user_id, channel, ip.
+ 2. Close (Tcp, *bool) - изменение opened -> false
  3. GetAll (user_id string, *[]Tcp) - возврат всех Tcp пользователя
  4. Get (id string, *Tcp) - возврат конкретного Tcp
  
