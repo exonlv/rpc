@@ -8,11 +8,11 @@
  1. volume_id [uuid] - генерим в коде
  2. label [string]
  3. replicas [integer]  min: 2 max: 5
- 4. ip [string array]
+ 4. volumeservers [volumeserver_id uuid array]
  5. limit [integer]
  6. user_id [uuid]
  7. created [timestamp without time zone] - генерим в PG
- 8. active [boolean] - DEFAULT false
+ 8. active [boolean] - DEFAULT true
  9. exists [boolean] - DEFAULT false
 
 
@@ -22,11 +22,13 @@
  1. Add(Volume, *bool) - добавление нового Volume
  2. GetByUser(user_id, *[]Volume) - поиск всех volumes пользователя
  3. Get(volume_id, *Volume) - получение Volume
- 4. Scale(Volume, *bool) - обновление replicas. Действует на replicas, ip
+ 4. Scale(Volume, *bool) - обновление replicas. Действует на replicas, volumeservers
  5. Rename(Volume, *bool) - обновление replicas. Действует на label
  6. Resize(Volume, *bool) - обновление. Действует на limit. Новый лимит всегда больше старого значения, иначе ошибка
  7. Activate(volume_id, *bool) - active -> true
  8. Deactivate(volume_id, *bool) - active -> false
+ 9. FindByVolumeserver(volumeserver_id, *[]Volume) - возврат всех Volume упомянутых в массиве volumeservers
+ 10. UsageByVolumeserver(volumeserver_id, integer) - сумма limit всех упомянутых в массиве volumeservers
 
 Требования
 ----------
