@@ -25,7 +25,7 @@ func checkErr(err error) bool {
 }
 
 // Проверяет колличество обработаных записей, если не было обработано ни одной - возвращает ошибку noRowsProcessedError, иначе nil.
-func rowNumbersHandler(row sql.Result, ok *bool) error {
+func rowNumbersHandler(row sql.Result) error {
 	noRowsProcessedError := errors.New("Failed to update the namespace. Maybe there is no namespace with such ID in the database.")
 	rowsNumber, err := row.RowsAffected()
 	if err != nil {

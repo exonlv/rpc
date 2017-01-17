@@ -11,7 +11,7 @@ func (_ *Namespace) Add(ns Namespace, ok *bool) error {
 func (_ *Namespace) Delete(ns Namespace, ok *bool) error {
 	row, err := db.Exec("UPDATE namespaces SET removed=TRUE where id=$1", ns.ID)
 	*ok = checkErr(err)
-	err = rowNumbersHandler(row, ok)
+	err = rowNumbersHandler(row)
 	*ok = checkErr(err)
 	return err
 }
@@ -69,7 +69,7 @@ func (_ *Namespace) Get(id string, resp *Namespace) error {
 func (_ *Namespace) Activate(id string, ok *bool) error {
 	row, err := db.Exec("UPDATE namespaces SET active=TRUE where id=$1", id)
 	*ok = checkErr(err)
-	err = rowNumbersHandler(row, ok)
+	err = rowNumbersHandler(row)
 	*ok = checkErr(err)
 	return err
 }
@@ -78,7 +78,7 @@ func (_ *Namespace) Activate(id string, ok *bool) error {
 func (_ *Namespace) Deactivate(id string, ok *bool) error {
 	row, err := db.Exec("UPDATE namespaces SET active=FALSE where id=$1", id)
 	*ok = checkErr(err)
-	err = rowNumbersHandler(row, ok)
+	err = rowNumbersHandler(row)
 	*ok = checkErr(err)
 	return err
 }
@@ -87,7 +87,7 @@ func (_ *Namespace) Deactivate(id string, ok *bool) error {
 func (_ *Namespace) CreateInKube(id string, ok *bool) error {
 	row, err := db.Exec("UPDATE namespaces SET kube_exist=TRUE where id=$1", id)
 	*ok = checkErr(err)
-	err = rowNumbersHandler(row, ok)
+	err = rowNumbersHandler(row)
 	*ok = checkErr(err)
 	return err
 }
@@ -96,7 +96,7 @@ func (_ *Namespace) CreateInKube(id string, ok *bool) error {
 func (_ *Namespace) DeletedInKube(id string, ok *bool) error {
 	row, err := db.Exec("UPDATE namespaces SET kube_exist=FALSE where id=$1", id)
 	*ok = checkErr(err)
-	err = rowNumbersHandler(row, ok)
+	err = rowNumbersHandler(row)
 	*ok = checkErr(err)
 	return err
 }
@@ -105,7 +105,7 @@ func (_ *Namespace) DeletedInKube(id string, ok *bool) error {
 func (_ *Namespace) Rename(ns Namespace, ok *bool) error {
 	row, err := db.Exec("UPDATE namespaces SET label=$1 where id=$2", ns.Label, ns.ID)
 	*ok = checkErr(err)
-	err = rowNumbersHandler(row, ok)
+	err = rowNumbersHandler(row)
 	*ok = checkErr(err)
 	return err
 }
