@@ -9,7 +9,9 @@ func (_ *Namespace) Add(ns Namespace, ok *bool) error {
 
 // Delete (Namespace, *bool) - изменение removed -> true
 func (_ *Namespace) Delete(ns Namespace, ok *bool) error {
-	_, err := db.Exec("UPDATE namespaces SET removed=TRUE where id=$1", ns.ID)
+	row, err := db.Exec("UPDATE namespaces SET removed=TRUE where id=$1", ns.ID)
+	*ok = checkErr(err)
+	err = rowNumbersHandler(row, ok)
 	*ok = checkErr(err)
 	return err
 }
@@ -65,35 +67,45 @@ func (_ *Namespace) Get(id string, resp *Namespace) error {
 
 // Activate(id string, *bool) - изменение active -> true
 func (_ *Namespace) Activate(id string, ok *bool) error {
-	_, err := db.Exec("UPDATE namespaces SET active=TRUE where id=$1", id)
+	row, err := db.Exec("UPDATE namespaces SET active=TRUE where id=$1", id)
+	*ok = checkErr(err)
+	err = rowNumbersHandler(row, ok)
 	*ok = checkErr(err)
 	return err
 }
 
 // Deactivate (id string, *bool) - изменение active -> false
 func (_ *Namespace) Deactivate(id string, ok *bool) error {
-	_, err := db.Exec("UPDATE namespaces SET active=FALSE where id=$1", id)
+	row, err := db.Exec("UPDATE namespaces SET active=FALSE where id=$1", id)
+	*ok = checkErr(err)
+	err = rowNumbersHandler(row, ok)
 	*ok = checkErr(err)
 	return err
 }
 
 // CreatedInKube (id string, *bool) - изменение kube_exist -> true
 func (_ *Namespace) CreateInKube(id string, ok *bool) error {
-	_, err := db.Exec("UPDATE namespaces SET kube_exist=TRUE where id=$1", id)
+	row, err := db.Exec("UPDATE namespaces SET kube_exist=TRUE where id=$1", id)
+	*ok = checkErr(err)
+	err = rowNumbersHandler(row, ok)
 	*ok = checkErr(err)
 	return err
 }
 
 // DeletedInKube (id string, *bool) - изменение kube_exist -> false
 func (_ *Namespace) DeletedInKube(id string, ok *bool) error {
-	_, err := db.Exec("UPDATE namespaces SET kube_exist=FALSE where id=$1", id)
+	row, err := db.Exec("UPDATE namespaces SET kube_exist=FALSE where id=$1", id)
+	*ok = checkErr(err)
+	err = rowNumbersHandler(row, ok)
 	*ok = checkErr(err)
 	return err
 }
 
 // Rename (Namespace, *bool) - изменение label
 func (_ *Namespace) Rename(ns Namespace, ok *bool) error {
-	_, err := db.Exec("UPDATE namespaces SET label=$1 where id=$2", ns.Label, ns.ID)
+	row, err := db.Exec("UPDATE namespaces SET label=$1 where id=$2", ns.Label, ns.ID)
+	*ok = checkErr(err)
+	err = rowNumbersHandler(row, ok)
 	*ok = checkErr(err)
 	return err
 }
