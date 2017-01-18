@@ -12,7 +12,7 @@
  5. active [boolean] - DEFAULT: false
  6. removed [boolean] - DEFAULT: false
  7. kube_exist [boolean] - DEFAULT: false
- 
+
  \* В качестве генератора uuid использовать uuid_generate_v4()
 
 Методы
@@ -27,8 +27,8 @@
  7. CreatedInKube (id string, *bool) - изменение kube_exist -> true
  8. DeletedInKube (id string, *bool) - изменение kube_exist -> false
  8. Rename (Namespace, *bool) - изменение label
- 
-  
+
+
 
 Требования
 ----------
@@ -40,6 +40,8 @@
  5. Создавать индексы в БД не нужно
  6. Код должен быть задокументирован
  7. ORM не используется
+ 8. Должна быть валидация переданных параметров перед каждым запросом (см. модель User)
+ 9. Типы сделать через указатели (см. модель User)
 
 
 Используемые пакеты
