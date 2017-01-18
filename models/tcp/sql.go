@@ -63,7 +63,7 @@ func (_ *Tcp) Close(tcp Tcp, ok *bool) error {
 		return errors.New("Nothing to update")
 	}
 	*ok = true
-	return err
+	return nil
 }
 
 //Возвращает все TCP соединения у пользователя
