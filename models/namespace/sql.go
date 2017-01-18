@@ -118,16 +118,3 @@ func queryExecutionHandler(query string, args ...interface{}) error {
 	err = rowNumbersHandler(row)
 	return err
 }
-
-// Проверяет колличество обработаных записей, если не было обработано ни одной - возвращает ошибку noRowsProcessedError, иначе nil.
-func rowNumbersHandler(row sql.Result) error {
-	noRowsProcessedError := errors.New("Failed to update/create the namespace. Maybe there is no namespace with such ID in the database.")
-	rowsAffected, err := row.RowsAffected()
-	if err != nil {
-		return err
-	}
-	if rowsAffected < 1 {
-		return noRowsProcessedError
-	}
-	return nil
-}
