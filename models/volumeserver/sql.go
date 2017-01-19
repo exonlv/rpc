@@ -162,8 +162,8 @@ func (_ *VolumeServer) GetByDiskType(diskType string, resp *[]VolumeServer) erro
 // query - sql запрос типа "UPDATE volumeservers SET label=$1 where id=$2" где $1 и $2 подставляются из args
 // args - аргументы встраиваемые в sql запрос(Порядок аргументов важен!)
 func queryExecutionHandler(query string, args ...interface{}) error {
-	_, err := db.Exec(query, args...)
-	// err = rowNumbersHandler(row)
+	row, err := db.Exec(query, args...)
+	err = rowNumbersHandler(row)
 	return err
 }
 
