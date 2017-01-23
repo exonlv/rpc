@@ -1,3 +1,4 @@
+--- VOLUMESEVER SQL ---
 CREATE TABLE IF NOT EXISTS public.volumeservers
 (
   volumeserver_id uuid NOT NULL DEFAULT uuid_generate_v4(),
