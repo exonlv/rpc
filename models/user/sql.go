@@ -25,7 +25,8 @@ func (_ *User) Create(user User, ok *bool) error {
 	key := base64.StdEncoding.EncodeToString(byteKey)
 	fmt.Printf("salt: %s\n key: %s\n", salt, key) //Debug
 	//INSERT
-	result, err := db.Exec("INSERT INTO users (pwd_key, salt, login, email, name, last_name) VALUES($1, $2, $3, $4, $5, $6)", key, salt, user.Login, user.Email, user.Name, user.LastName)
+	result, err := db.Exec("INSERT INTO users (pwd_key, salt, login, email, name, last_name) VALUES($1, $2, $3, $4, $5, $6)",
+			       key, salt, user.Login, user.Email, user.Name, user.LastName)
 	if err != nil {
 		return err
 	}
@@ -58,7 +59,8 @@ func (_ *User) ChangePassword(user User, ok *bool) error {
 	selectQuery := fmt.Sprintf("SELECT user_id, login, email, name, last_name FROM users %s", where)
 	fmt.Println(selectQuery)
 	//Check exist
-	err = db.QueryRow("SELECT user_id, login, email, name, last_name FROM users "+where).Scan(&user.UserID, &user.Login, &user.Email, &user.Name, &user.LastName)
+	err = db.QueryRow("SELECT user_id, login, email, name, last_name FROM users "+where).Scan(
+		&user.UserID, &user.Login, &user.Email, &user.Name, &user.LastName)
 	if err != nil {
 		return err
 	}
