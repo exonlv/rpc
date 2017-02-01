@@ -11,6 +11,16 @@ import (
 
 //Add(Volume, *bool) - добавление нового Volume
 func (_ *Volume) Add(volume Volume, ok *bool) error {
+	replicasMin := 2
+	replicasMax := 5
+	if replicasMax > *volume.Replicas || *volume.Replicas > replicasMin {
+		*ok = false
+		return fmt.Errorf("Replicas should be in range 2 - 5")
+	}
+	if len(*volume.VolumeServers) != *volume.Replicas {
+		*ok = false
+		return fmt.Errorf("Replicas must be aqual len(volumeservers)")
+	}
 	var err error
 	var volumeID string
 	volumeID, err = newUUID()
@@ -83,9 +93,15 @@ func (_ *Volume) Get(volume_id string, resp *Volume) error {
 
 //Scale(Volume, *bool) - обновление replicas. Действует на replicas, volumeservers
 func (_ *Volume) Scale(volume Volume, ok *bool) error {
-	if *volume.Replicas != len(*volume.VolumeServers) {
+	replicasMin := 2
+	replicasMax := 5
+	if replicasMax > *volume.Replicas || *volume.Replicas > replicasMin {
 		*ok = false
-		return fmt.Errorf("Replicas not equal volumeservers length")
+		return fmt.Errorf("Replicas should be in range 2 - 5")
+	}
+	if len(*volume.VolumeServers) != *volume.Replicas {
+		*ok = false
+		return fmt.Errorf("Replicas must be aqual len(volumeservers)")
 	}
 	query := "UPDATE volumes SET replicas=$1, volumeservers=$2 WHERE volume_id=$3"
 	err := queryExecutionHandler(query, volume.Replicas, "{"+strings.Join(*volume.VolumeServers, ", ")+"}", volume.VolumeID)
