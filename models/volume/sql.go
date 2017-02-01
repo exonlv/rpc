@@ -13,7 +13,7 @@ import (
 func (_ *Volume) Add(volume Volume, ok *bool) error {
 	replicasMin := 2
 	replicasMax := 5
-	if replicasMax > *volume.Replicas || *volume.Replicas > replicasMin {
+	if replicasMax < *volume.Replicas || *volume.Replicas < replicasMin {
 		*ok = false
 		return fmt.Errorf("Replicas should be in range 2 - 5")
 	}
@@ -95,7 +95,7 @@ func (_ *Volume) Get(volume_id string, resp *Volume) error {
 func (_ *Volume) Scale(volume Volume, ok *bool) error {
 	replicasMin := 2
 	replicasMax := 5
-	if replicasMax > *volume.Replicas || *volume.Replicas > replicasMin {
+	if replicasMax < *volume.Replicas || *volume.Replicas < replicasMin {
 		*ok = false
 		return fmt.Errorf("Replicas should be in range 2 - 5")
 	}
