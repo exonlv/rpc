@@ -64,8 +64,8 @@ func (_ *Namespace) GetAll(userId string, resp *[]Namespace) error {
 
 }
 
-// Get (id string, *Namespace) - возврат конкретного Namespace пользователя
-func (_ *Namespace) Get(id string, resp *Namespace) error {
+// GetById (id string, *Namespace) - возврат конкретного Namespace пользователя
+func (_ *Namespace) GetById(id string, resp *Namespace) error {
 	ns := Namespace{}
 	row := db.QueryRow("SELECT * FROM namespaces WHERE id = $1", id)
 	err := row.Scan(&ns.ID,
