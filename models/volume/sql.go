@@ -127,8 +127,8 @@ func (_ *Volume) Scale(volume Volume, ok *bool) error {
 		*ok = false
 		return fmt.Errorf("Replicas must be aqual len(volumeservers)")
 	}
-	query := "UPDATE volumes SET replicas=$1, volumeservers=$2 WHERE volume_id=$3"
-	err := queryExecutionHandler(query, volume.Replicas, "{"+strings.Join(*volume.VolumeServers, ", ")+"}", volume.VolumeID)
+	query := "UPDATE volumes SET replicas=$1, volumeservers=$2 WHERE volume_id=$3 and label = $4"
+	err := queryExecutionHandler(query, volume.Replicas, "{"+strings.Join(*volume.VolumeServers, ", ")+"}", volume.VolumeID, volume.Label)
 	*ok = checkErr(err)
 	return err
 }
@@ -144,7 +144,7 @@ func (_ *Volume) Rename(volume Volume, ok *bool) error {
 // Resize(Volume, *bool) - обновление. Действует на limit. Новый лимит всегда больше старого значения, иначе ошибка
 func (_ *Volume) Resize(volume Volume, ok *bool) error {
 	limitSize := Volume{}
-	row := db.QueryRow("SELECT * FROM volumes WHERE volume_id = $1", volume.VolumeID)
+	row := db.QueryRow("SELECT * FROM volumes WHERE volume_id = $1 and label = $2", volume.VolumeID, volume.Label)
 	var volumeServers []string
 	err := row.Scan(
 		&limitSize.VolumeID,
