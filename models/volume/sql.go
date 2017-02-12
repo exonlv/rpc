@@ -173,7 +173,7 @@ func (_ *Volume) Resize(volume Volume, ok *bool) error {
 }
 
 //Activate(volume_id, *bool) - active -> true
-func (_ *Volume) Activate(volume_id string, ok *bool) error {
+func (_ *Volume) ActivateById(volume_id string, ok *bool) error {
 	query := "UPDATE volumes SET active=TRUE where volume_id=$1"
 	err := queryExecutionHandler(query, volume_id)
 	*ok = checkErr(err)
@@ -181,7 +181,7 @@ func (_ *Volume) Activate(volume_id string, ok *bool) error {
 }
 
 //Deactivate(volume_id, *bool) - active -> false
-func (_ *Volume) Deactivate(volume_id string, ok *bool) error {
+func (_ *Volume) DeactivateById(volume_id string, ok *bool) error {
 	query := "UPDATE volumes SET active=FALSE where volume_id=$1"
 	err := queryExecutionHandler(query, volume_id)
 	*ok = checkErr(err)
