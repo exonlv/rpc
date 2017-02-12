@@ -6,17 +6,32 @@ import (
 )
 
 // Add (Namespace, *bool) - Добавление новой записи в таблице Namespace. Передаются только: label, user_id
-func (_ *Namespace) Add(ns Namespace, ok *bool) error {
+func (_ *Namespace) Add(nameserver Namespace, id *string) error {
 	query := "INSERT INTO namespaces(label, user_id) VALUES($1, $2)"
-	err := queryExecutionHandler(query, ns.Label, ns.UserID)
-	*ok = checkErr(err)
-	return err
+	err := queryExecutionHandler(query, nameserver.Label, nameserver.UserID)
+	ns := Namespace{}
+	row := db.QueryRow("SELECT * FROM namespaces WHERE label = $1", nameserver.Label)
+	err = row.Scan(
+		&ns.ID,
+		&ns.Label,
+		&ns.UserID,
+		&ns.Created,
+		&ns.Active,
+		&ns.Removed,
+		&ns.KubeExist,
+	)
+	if err != nil {
+		return err
+	}
+
+	*id = ns.ID
+	return nil
 }
 
 // Delete (Namespace, *bool) - изменение removed -> true
-func (_ *Namespace) Delete(ns Namespace, ok *bool) error {
+func (_ *Namespace) DeleteById(id string, ok *bool) error {
 	query := "UPDATE namespaces SET removed=TRUE where id=$1"
-	err := queryExecutionHandler(query, ns.ID)
+	err := queryExecutionHandler(query, id)
 	*ok = checkErr(err)
 	return err
 }
@@ -49,8 +64,29 @@ func (_ *Namespace) GetAll(userId string, resp *[]Namespace) error {
 
 }
 
-// Get (id string, *Namespace) - возврат конкретного Namespace пользователя
-func (_ *Namespace) Get(id string, resp *Namespace) error {
+// Get(Namespace, *Namespace). Возврат Namespace по label, user_id
+func (_ *Namespace) Get(namespace Namespace, resp *Namespace) error {
+	ns := Namespace{}
+	row := db.QueryRow("SELECT * FROM namespaces WHERE label = $1 and user_id = $2", namespace.Label, namespace.UserID)
+	err := row.Scan(&ns.ID,
+		&ns.Label,
+		&ns.UserID,
+		&ns.Created,
+		&ns.Active,
+		&ns.Removed,
+		&ns.KubeExist,
+	)
+	if err != nil {
+		return err
+	}
+
+	*resp = ns
+	return nil
+
+}
+
+// GetById (id string, *Namespace) - возврат конкретного Namespace пользователя
+func (_ *Namespace) GetById(id string, resp *Namespace) error {
 	ns := Namespace{}
 	row := db.QueryRow("SELECT * FROM namespaces WHERE id = $1", id)
 	err := row.Scan(&ns.ID,
@@ -103,7 +139,7 @@ func (_ *Namespace) DeletedInKube(id string, ok *bool) error {
 }
 
 // Rename (Namespace, *bool) - изменение label
-func (_ *Namespace) Rename(ns Namespace, ok *bool) error {
+func (_ *Namespace) RenameById(ns Namespace, ok *bool) error {
 	query := "UPDATE namespaces SET label=$1 where id=$2"
 	err := queryExecutionHandler(query, ns.Label, ns.ID)
 	*ok = checkErr(err)
