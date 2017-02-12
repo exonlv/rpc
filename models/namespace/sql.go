@@ -6,11 +6,26 @@ import (
 )
 
 // Add (Namespace, *bool) - Добавление новой записи в таблице Namespace. Передаются только: label, user_id
-func (_ *Namespace) Add(ns Namespace, ok *bool) error {
+func (_ *Namespace) Add(nameserver Namespace, id *string) error {
 	query := "INSERT INTO namespaces(label, user_id) VALUES($1, $2)"
-	err := queryExecutionHandler(query, ns.Label, ns.UserID)
-	*ok = checkErr(err)
-	return err
+	err := queryExecutionHandler(query, nameserver.Label, nameserver.UserID)
+	ns := Namespace{}
+	row := db.QueryRow("SELECT * FROM namespaces WHERE label = $1", nameserver.Label)
+	err = row.Scan(
+		&ns.ID,
+		&ns.Label,
+		&ns.UserID,
+		&ns.Created,
+		&ns.Active,
+		&ns.Removed,
+		&ns.KubeExist,
+	)
+	if err != nil {
+		return err
+	}
+
+	*id = ns.ID
+	return nil
 }
 
 // Delete (Namespace, *bool) - изменение removed -> true
