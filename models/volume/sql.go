@@ -26,7 +26,7 @@ func (_ *Volume) Add(volume Volume, ok *bool) error {
 	volumeID, err = newUUID()
 	volume.VolumeID = &volumeID
 	var errs []error
-	*ok, errs = volume.checkFields("volume_id", "labels", "replicas", "volumeservers", "limit", "user_id")
+	*ok, errs = volume.checkFields("volume_id", "label", "replicas", "volumeservers", "limit", "user_id")
 	if !*ok {
 		return errs[0]
 	}
