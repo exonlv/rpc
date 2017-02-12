@@ -139,7 +139,7 @@ func (_ *Namespace) DeletedInKube(id string, ok *bool) error {
 }
 
 // Rename (Namespace, *bool) - изменение label
-func (_ *Namespace) Rename(ns Namespace, ok *bool) error {
+func (_ *Namespace) RenameById(ns Namespace, ok *bool) error {
 	query := "UPDATE namespaces SET label=$1 where id=$2"
 	err := queryExecutionHandler(query, ns.Label, ns.ID)
 	*ok = checkErr(err)
