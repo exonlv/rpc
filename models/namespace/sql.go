@@ -29,9 +29,9 @@ func (_ *Namespace) Add(nameserver Namespace, id *string) error {
 }
 
 // Delete (Namespace, *bool) - изменение removed -> true
-func (_ *Namespace) Delete(ns Namespace, ok *bool) error {
+func (_ *Namespace) DeleteById(id string, ok *bool) error {
 	query := "UPDATE namespaces SET removed=TRUE where id=$1"
-	err := queryExecutionHandler(query, ns.ID)
+	err := queryExecutionHandler(query, id)
 	*ok = checkErr(err)
 	return err
 }
