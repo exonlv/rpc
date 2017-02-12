@@ -67,6 +67,34 @@ func (_ *Volume) GetByUser(user_id string, volumes *[]Volume) error {
 	return nil
 }
 
+// Get(Volume, *Volume). Возврат Volume по label, user_id
+func (_ *Volume) Get(volume Volume, resp *Volume) error {
+	_, errs := volume.checkFields("label", "user_id")
+	if errs != nil {
+		return errs[0]
+	}
+	vol := Volume{}
+	row := db.QueryRow("SELECT * FROM volumes WHERE label = $1 and user_id = $2", volume.Label, volume.UserID)
+	var volumeServers []string
+	err := row.Scan(
+		&vol.VolumeID,
+		&vol.Label,
+		&vol.Replicas,
+		pq.Array(&volumeServers), //TODO: need refactoring
+		&vol.Limit,
+		&vol.UserID,
+		&vol.Cteated,
+		&vol.Active,
+		&vol.Exists,
+	)
+	vol.VolumeServers = &volumeServers
+	if err != nil {
+		return err
+	}
+	*resp = vol
+	return nil
+}
+
 //Get(volume_id, *Volume) - получение Volume
 func (_ *Volume) GetById(volume_id string, resp *Volume) error {
 	volume := Volume{}
