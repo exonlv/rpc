@@ -10,29 +10,25 @@ import (
 )
 
 //Add(Volume, *bool) - добавление нового Volume
-func (_ *Volume) Add(volume Volume, ok *bool) error {
+func (_ *Volume) Add(volume Volume, volumeID *string) error {
 	replicasMin := 2
 	replicasMax := 5
 	if replicasMax < *volume.Replicas || *volume.Replicas < replicasMin {
-		*ok = false
 		return fmt.Errorf("Replicas should be in range 2 - 5")
 	}
 	if len(*volume.VolumeServers) != *volume.Replicas {
-		*ok = false
 		return fmt.Errorf("Replicas must be aqual len(volumeservers)")
 	}
 	var err error
-	var volumeID string
-	volumeID, err = newUUID()
-	volume.VolumeID = &volumeID
+	*volumeID, err = newUUID()
+	volume.VolumeID = volumeID
 	var errs []error
-	*ok, errs = volume.checkFields("volume_id", "label", "replicas", "volumeservers", "limit", "user_id")
-	if !*ok {
+	_, errs = volume.checkFields("volume_id", "label", "replicas", "volumeservers", "limit", "user_id")
+	if errs != nil {
 		return errs[0]
 	}
 	query := "INSERT INTO volumes(volume_id, label, replicas, volumeservers, limits, user_id) VALUES($1, $2, $3, $4, $5, $6)"
 	err = queryExecutionHandler(query, volume.VolumeID, volume.Label, volume.Replicas, "{"+strings.Join(*volume.VolumeServers, ", ")+"}", volume.Limit, volume.UserID) //TODO: need refactoring
-	*ok = checkErr(err)
 	return err
 }
 
