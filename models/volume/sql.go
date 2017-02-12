@@ -68,7 +68,7 @@ func (_ *Volume) GetByUser(user_id string, volumes *[]Volume) error {
 }
 
 //Get(volume_id, *Volume) - получение Volume
-func (_ *Volume) Get(volume_id string, resp *Volume) error {
+func (_ *Volume) GetById(volume_id string, resp *Volume) error {
 	volume := Volume{}
 	row := db.QueryRow("SELECT * FROM volumes WHERE volume_id = $1", volume_id)
 	var volumeServers []string
