@@ -64,6 +64,27 @@ func (_ *Namespace) GetAll(userId string, resp *[]Namespace) error {
 
 }
 
+// Get(Namespace, *Namespace). Возврат Namespace по label, user_id
+func (_ *Namespace) Get(namespace Namespace, resp *Namespace) error {
+	ns := Namespace{}
+	row := db.QueryRow("SELECT * FROM namespaces WHERE label = $1 and user_id = $2", namespace.Label, namespace.UserID)
+	err := row.Scan(&ns.ID,
+		&ns.Label,
+		&ns.UserID,
+		&ns.Created,
+		&ns.Active,
+		&ns.Removed,
+		&ns.KubeExist,
+	)
+	if err != nil {
+		return err
+	}
+
+	*resp = ns
+	return nil
+
+}
+
 // GetById (id string, *Namespace) - возврат конкретного Namespace пользователя
 func (_ *Namespace) GetById(id string, resp *Namespace) error {
 	ns := Namespace{}
